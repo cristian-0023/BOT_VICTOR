@@ -1,5 +1,6 @@
 import pandas as pd
 import glob
+import matplotlib.pyplot as plt
 
 # busco los archivos en la carpeta, no se cuantos hay de cada tipo
 archivos_csv = glob.glob("*.csv")
@@ -51,3 +52,27 @@ for col in df_limpio.select_dtypes(include=['object', 'string']).columns:
 print("columnas finales:", list(df_limpio.columns))
 print("total filas:", len(df_limpio))
 print(df_limpio.head(10))
+
+# 6a. ventas por categoria (grafico de barras)
+ventas_por_categoria = df_limpio.groupby('categoria')['precio_unitario'].sum()
+ventas_por_categoria.plot(kind='bar', title='Ventas por Categoria')
+plt.ticklabel_format(style='plain', axis='y')
+plt.ylabel('Ventas totales ($)')
+plt.xlabel('Categoria')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.savefig("grafico_ventas_categoria.png")
+plt.show()
+
+# 6b. participacion por vendedor (grafico de torta)
+ventas_por_vendedor = df_limpio.groupby('vendedor')['precio_unitario'].sum()
+ventas_por_vendedor.plot(kind='pie', autopct='%1.1f%%', title='Participacion de Ventas por Vendedor')
+plt.ylabel('')
+plt.tight_layout()
+plt.savefig("grafico_ventas_vendedor.png")
+plt.show()
+
+# 6c. producto que mas se repite en las ventas
+producto_mas_vendido = df_limpio['producto'].value_counts()
+print(producto_mas_vendido)
+print(f"Producto mas vendido: {producto_mas_vendido.index[0]} con {producto_mas_vendido.iloc[0]} ventas")
