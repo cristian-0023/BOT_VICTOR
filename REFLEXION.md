@@ -15,7 +15,8 @@ Mi repo tiene 13 commits. Dos de mis mensajes fueron:
 - "Solucion a columnas distintas, consolidacion de 7 columnas y limpieza de datos"
 
 **¿Qué mejora le harías a este sistema?**
-Le agregaría un manejo de errores mejor, porque si llega un archivo dañado o con columnas que no cuadran el script se puede caer. También me gustaría que en vez de guardar los "archivos vistos" solo en memoria, quedaran guardados en un archivo para que si se reinicia el script no se pierda ese registro.
+Le agregaría un manejo de errores mejor, porque si llega un archivo dañado o con columnas que no cuadran el script se puede caer. También me gustaría que en vez de guardar los "archivos clear
+vistos" solo en memoria, quedaran guardados en un archivo para que si se reinicia el script no se pierda ese registro.
 
 **¿Qué fue lo que más te gustó aprender?**
 Lo que más me gustó fue ver cómo un script puede estar "vigilando" una carpeta y reaccionar solo cuando llega algo nuevo, sin que yo tenga que estar corriendo todo manualmente. Fue interesante juntar lo de manejo de archivos con pandas y verlo funcionar de principio a fin.
