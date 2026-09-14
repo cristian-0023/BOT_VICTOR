@@ -26,8 +26,19 @@ def procesar_todo():
         lista_dataframe.append(df)
         print(f"Leído: {archivo} - {len(df)} filas")
 
+    # enumerate() recorre lista_dataframe entregando cada DataFrame junto
+    # con su posicion (i). Necesitamos ese indice porque para reemplazar
+    # el DataFrame corregido hay que asignarlo en su misma posicion dentro
+    # de la lista (lista_dataframe[i] = ...); iterando solo con "for df in"
+    # no se puede modificar la lista original, solo la copia temporal.
     for i, df in enumerate(lista_dataframe):
+        # Bogota es la unica sucursal que llega con columnas en otro formato
+        # (Fecha_Venta, Cant, Valor_Unitario, etc.). Se detecta buscando
+        # 'Fecha_Venta', que no existe en los demas archivos.
         if 'Fecha_Venta' in df.columns:
+            # Diccionario de renombrado: mapea los nombres originales de
+            # Bogota a los nombres estandar que ya usan las otras 3
+            # sucursales, para poder consolidar todo con pd.concat().
             lista_dataframe[i] = df.rename(columns={
                 'Fecha_Venta': 'fecha',
                 'Producto': 'producto',

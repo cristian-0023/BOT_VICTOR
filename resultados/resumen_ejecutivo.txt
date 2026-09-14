@@ -1,5 +1,5 @@
 RESUMEN EJECUTIVO - Bot de Ventas
-Fecha: 2026-09-14 15:11:57.048608
+Fecha: 2026-09-14 15:21:07.441554
 
 Categoria con mejor desempeño: Electronica
 Vendedor con mas ventas: Carlos
