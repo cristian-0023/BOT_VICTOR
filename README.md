@@ -1,22 +1,27 @@
-# Bot de Ventas
+## Análisis de negocio
 
-Script en Python que consolida reportes de ventas de 4 sucursales (Medellín, Bogotá, Cali, Barranquilla) en distintos formatos (CSV/XLSX), limpia los datos y genera un análisis con gráficos.
+**¿Qué categoría de productos deberíamos priorizar en inventario y promociones?**
+Electrónica es la categoría con mejor desempeño en ventas totales, por encima de Ropa. Conviene asegurar stock de esa línea antes que la otra.
 
-## Resultados
+**¿Qué vendedor está generando más ingresos y qué se puede aprender de su desempeño?**
+Carlos es el vendedor con más ventas acumuladas. Vale la pena revisar qué está haciendo distinto (turnos, sucursal, tipo de producto que mueve) para replicarlo con el resto del equipo.
 
-- Categoría con más ventas: Electrónica (~$2.600.000) vs Ropa (~$1.600.000)
-- Vendedora con más ventas: Camila Ruiz (33.7% de participación)
-- Producto más vendido: Cargador USB-C (8 ventas)
+**¿Cuál es el producto que más rota y qué implica para el abastecimiento?**
+El Cargador USB-C es el producto más vendido con 8 unidades. Es un producto de bajo precio unitario y alta rotación, así que el riesgo de quiebre de stock es más urgente ahí que en productos de precio alto pero baja rotación.
 
-## Cómo ejecutar
+**¿El promedio de venta por transacción es sano para el negocio?**
+El promedio de venta por transacción es de $129,091. Sirve como línea base: si en próximos reportes ese promedio baja mientras el número de transacciones sube, puede indicar que se está vendiendo más volumen pero de productos más baratos (como el cargador), lo cual cambia la estrategia de precios o de combos.
 
-pip install pandas matplotlib openpyxl
-python main.py
+## Conclusión
 
-## Automatización
+Con 57 transacciones consolidadas de 4 sucursales, el negocio depende fuertemente de Electrónica y de un producto de bajo costo (Cargador USB-C) para su volumen de ventas, mientras que el ingreso está concentrado en un vendedor top (Carlos). Esto sugiere dos riesgos a vigilar: dependencia de un solo producto de alta rotación y baja diversificación en el desempeño del equipo de ventas.
 
-El script no se ejecuta una sola vez: al correr `python main.py`, primero procesa lo que ya haya en `datos/`, y después se queda vigilando esa carpeta de forma indefinida.
+## Reflexión final
 
-**Cómo detecta archivos nuevos:** cada 5 segundos compara la lista de archivos que hay en `datos/` contra la última lista que guardó en memoria. La diferencia entre ambas listas son los archivos nuevos. No usa ninguna librería externa de monitoreo, solo `os.listdir()` y una resta de conjuntos (`set`).
+Como dueño del negocio, confiaría en este sistema para **monitorear tendencias y alertar** (qué categoría cae, qué vendedor se estanca, si el promedio de transacción baja), pero no para **tomar decisiones finales por sí solo**. Las razones:
 
-**Qué pasa cuando encuentra uno:** si el archivo nuevo termina en `.csv` o `.xlsx`, se dispara todo el proceso de nuevo: lee **todos** los archivos de `datos/` (no solo el nuevo), consolida, limpia duplicados y vacíos, normaliza la columna con nombres distintos (`Fecha_Venta`), regenera el consolidado y los dos gráficos, y agrega una línea al log en `resultados/log_automatizacion.txt` con la fecha y el total de registros procesados. Así el consolidado y los gráficos siempre reflejan el estado completo de la carpeta, no solo el último archivo que llegó.
+- El script no distingue causas: si el promedio de venta baja, no sabe si es por una promoción intencional, un error de precios cargado mal, o una caída real de demanda. Esa distinción la tiene que hacer una persona.
+- `dropna()` y `drop_duplicates()` eliminan filas automáticamente sin que nadie revise si eran errores de digitación o ventas reales mal registradas — eso puede estar ocultando pérdidas de datos importantes.
+- Las métricas están calculadas sobre datos acumulados desde el inicio, sin filtro de fechas: no distingue "esta semana" de "todo el histórico", así que una mala racha reciente puede quedar diluida entre los buenos meses anteriores.
+
+En resumen: lo usaría como el primer filtro que me dice **dónde mirar**, no como el que me dice **qué decidir**.

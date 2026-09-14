@@ -1,0 +1,5 @@
+fecha,producto,categoria,cantidad,precio_unitario,vendedor,metodo_pago
+2026-08-28,Parlante portatil,Electronica,2,65000,Luis Hernandez,Efectivo
+2026-08-29,Camiseta basica,Ropa,5,32000,Marta Ríos,Tarjeta
+2026-08-30,Audifonos Bluetooth,Electronica,3,42000,Luis Hernandez,Efectivo
+2026-08-31,Falda,Ropa,1,75000,Marta Ríos,Transferencia

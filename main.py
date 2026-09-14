@@ -73,10 +73,43 @@ def procesar_todo():
     print(producto_mas_vendido)
     print(f"Producto mas vendido: {producto_mas_vendido.index[0]} con {producto_mas_vendido.iloc[0]} ventas")
 
-    with open("resultados/log_automatizacion.txt", "a") as f:
+    with open("resultados/log_automatizacion.txt", "a", encoding="utf-8") as f:
         f.write(f"Proceso ejecutado: {pd.Timestamp.now()}\n")
         f.write(f"Total de registros procesados: {len(df_limpio)}\n")
         f.write("---\n")
+
+    # ============================================
+    # Banner visual con resumen en pantalla
+    # ============================================
+    total_ventas = df_limpio['precio_unitario'].sum()
+    print("=" * 40)
+    print("  NUEVO REPORTE PROCESADO EXITOSAMENTE")
+    print(f"  Total ventas acumuladas: ${total_ventas:,.0f}")
+    print("=" * 40)
+
+    # ============================================
+    # Resumen ejecutivo en archivo de texto
+    # (usamos df_limpio, no df_consolidado, para que
+    # el resumen refleje los datos ya sin nulos ni duplicados)
+    # ============================================
+    categoria_top = df_limpio.groupby('categoria')['precio_unitario'].sum().idxmax()
+    vendedor_top = df_limpio.groupby('vendedor')['precio_unitario'].sum().idxmax()
+
+    # Métrica nueva 1: producto más vendido (reutilizando value_counts() de arriba)
+    producto_top = producto_mas_vendido.index[0]
+    unidades_producto_top = producto_mas_vendido.iloc[0]
+
+    # Métrica nueva 2: promedio de venta por transacción
+    promedio_venta = df_limpio['precio_unitario'].mean()
+
+    with open("resultados/resumen_ejecutivo.txt", "w", encoding="utf-8") as f:
+        f.write("RESUMEN EJECUTIVO - Bot de Ventas\n")
+        f.write(f"Fecha: {pd.Timestamp.now()}\n\n")
+        f.write(f"Categoria con mejor desempeño: {categoria_top}\n")
+        f.write(f"Vendedor con mas ventas: {vendedor_top}\n")
+        f.write(f"Producto mas vendido: {producto_top} ({unidades_producto_top} ventas)\n")
+        f.write(f"Promedio de venta por transaccion: ${promedio_venta:,.0f}\n")
+        f.write(f"Total de ventas acumuladas: ${total_ventas:,.0f}\n")
 
 
 os.makedirs("resultados", exist_ok=True)
